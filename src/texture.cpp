@@ -36,3 +36,8 @@ Color ImageTexture::value(double u, double v, const point3& p) const
 
     return Color(color_scale * pixel[0], color_scale * pixel[1], color_scale * pixel[2]);
 }
+
+Color NoiseTexture::value(double u, double v, const point3& p) const 
+{
+    return Color(1.0, 1.0, 1.0) * noise.noise(p);
+}

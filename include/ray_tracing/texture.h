@@ -3,6 +3,7 @@
 #include "ray_tracing/color.h"
 #include "ray_tracing/vec3.h"
 #include "ray_tracing/image.h"
+#include "ray_tracing/perlin.h"
 
 class Texture
 {
@@ -50,4 +51,15 @@ class ImageTexture : public Texture
     
     private:
         Image image;
+};
+
+class NoiseTexture : public Texture
+{
+    public:
+        NoiseTexture() {}
+
+        Color value(double u, double v, const point3& p) const override;
+
+    private:
+        Perlin noise;
 };

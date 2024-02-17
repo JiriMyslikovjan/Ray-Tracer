@@ -99,6 +99,30 @@ void two_spheres() {
     cam.render(world);
 }
 
+void two_perlin_spheres() {
+    Hittable_list world;
+
+    auto pertext = std::make_shared<NoiseTexture>();
+    world.add(std::make_shared<Sphere>(point3(0,-1000,0), 1000, std::make_shared<Lambertian>(pertext)));
+    world.add(std::make_shared<Sphere>(point3(0,2,0), 2, std::make_shared<Lambertian>(pertext)));
+
+    Camera cam;
+
+    cam.aspect_ratio      = 16.0 / 9.0;
+    cam.image_width       = 400;
+    cam.spp = 100;
+    cam.max_depth         = 50;
+
+    cam.vfov     = 20;
+    cam.look_from = point3(13,2,3);
+    cam.look_at   = point3(0,0,0);
+    cam.vup      = vec3(0,1,0);
+
+    cam.defocus_angle = 0;
+
+    cam.render(world);
+}
+
 void earth() {
     auto earth_texture = std::make_shared<ImageTexture>("earthmap.jpg");
     auto earth_surface = std::make_shared<Lambertian>(earth_texture);
@@ -126,7 +150,7 @@ void earth() {
 
 int main()
 {   
-    switch (3)
+    switch (4)
     {
     case 1:
         random_spheres();
@@ -138,6 +162,10 @@ int main()
 
     case 3:
         earth();
+        break;
+    
+    case 4:
+        two_perlin_spheres();
         break;
     
     default:

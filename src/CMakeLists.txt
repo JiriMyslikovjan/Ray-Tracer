@@ -1,6 +1,6 @@
 project(ray_tracer)
 
-add_library(ray_tracing vec3.cpp color.cpp ray.cpp object.cpp utils.cpp camera.cpp material.cpp aabb.cpp bvh.cpp texture.cpp image.cpp)
+add_library(ray_tracing vec3.cpp color.cpp ray.cpp object.cpp utils.cpp camera.cpp material.cpp aabb.cpp bvh.cpp texture.cpp image.cpp perlin.cpp)
 
 target_include_directories(ray_tracing 
     PUBLIC 
