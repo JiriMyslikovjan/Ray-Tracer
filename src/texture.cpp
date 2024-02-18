@@ -39,5 +39,6 @@ Color ImageTexture::value(double u, double v, const point3& p) const
 
 Color NoiseTexture::value(double u, double v, const point3& p) const 
 {
-    return Color(1.0, 1.0, 1.0) * noise.noise(p);
+    point3 s = scale * p;
+    return Color(1.0, 1.0, 1.0) * 0.5 * (1.0 + sin(s.z + 10.0 * noise.turb(s)));
 }

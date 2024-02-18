@@ -58,8 +58,11 @@ class NoiseTexture : public Texture
     public:
         NoiseTexture() {}
 
+        NoiseTexture(double _scale) : scale(_scale) {}
+
         Color value(double u, double v, const point3& p) const override;
 
     private:
         Perlin noise;
+        double scale;
 };

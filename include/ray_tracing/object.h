@@ -94,3 +94,35 @@ class Sphere : public Hittable
 
         static void get_sphere_uv(const point3& p, double& u, double& v);
 };
+
+class Quad : public Hittable
+{
+    public:
+        Quad(const point3& _q, const vec3& _u, const vec3& _v, std::shared_ptr<Material> _m)
+            : q(_q), u(_u), v(_v), mat(_m) 
+            {
+                vec3 n = cross(u, v);
+                normal = unit_vector(n);
+                d = dot(normal, q);
+                w = n / dot(n, n);
+
+                set_bounding_box();
+            }
+
+            virtual void set_bounding_box();
+
+            Aabb bounding_box() const override;
+
+            bool hit(const Ray &r, Interval ray_t, Hit_record& rec) const override;
+
+            virtual bool is_interior(double a, double b, Hit_record& rec) const;
+
+    private:
+        point3 q;
+        vec3 u, v;
+        std::shared_ptr<Material> mat;
+        Aabb bbox;
+        vec3 normal;
+        double d;
+        vec3 w;
+};

@@ -102,3 +102,56 @@ void Sphere::get_sphere_uv(const point3& p, double& u, double&v)
     u = phi / (2 * pi);
     v = theta / pi;
 }
+
+void Quad::set_bounding_box()
+{
+    bbox = Aabb(q, q + u + v).pad();
+}
+
+Aabb Quad::bounding_box() const 
+{
+    return bbox;
+}
+
+bool Quad::hit(const Ray &r, Interval ray_t, Hit_record& rec) const 
+{
+    double denom = dot(normal, r.direction());
+
+    // No hit if the ray is parallel to the plane
+    if(fabs(denom) < 1e-8)
+        return false;
+
+    double t = (d - dot(normal, r.origin())) / denom;
+
+    // Return false of the hit point parameter t is outside the ray interval
+    if(! ray_t.contains(t))
+        return false;
+
+    point3 intersection = r.at(t);
+    vec3 planar_hitpt_vec = intersection - q;
+    double alpha = dot(w, cross(planar_hitpt_vec, v));
+    double beta = dot(w, cross(u, planar_hitpt_vec));
+
+    if(! is_interior(alpha, beta, rec))
+        return false;
+
+    rec.t = t;
+    rec.p = intersection;
+    rec.mat = mat;
+    rec.set_face_normal(r, normal);
+
+    return true;
+}
+
+// Given hit point in plane coordinates, return false if it is outside the primitive
+// Otherwise set the hit record U V coordinates and return true
+bool Quad::is_interior(double a, double b, Hit_record& rec) const
+{
+    if((a < 0) || (1 < a) || (b < 0) || (1 < b))
+        return false;
+
+    rec.u = a;
+    rec.v = b;
+
+    return true;
+}

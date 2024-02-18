@@ -20,4 +20,6 @@ class Aabb
         const Interval& axis(int n) const;
 
         bool hit(const Ray& r, Interval ray_t) const;
+        
+        Aabb pad();
 };
